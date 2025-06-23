@@ -1,1 +1,74 @@
-# Brainwave_Matrix_Intern
+
+
+accounts = {
+    "1234": {"balance": 10000.0},
+    "1111": {"balance": 5000.0},
+    "2222": {"balance": 15000.0}
+}
+
+
+def authenticate():
+    for _ in range(3):
+        pin = input(" Enter your 4-digit PIN: ")
+        if pin in accounts:
+            print(" Login successful!\n")
+            return pin
+        else:
+            print(" Invalid PIN. Try again.")
+    print(" Too many wrong attempts. Exiting...")
+    return None
+
+
+def show_menu():
+    print("\n===== ATM Menu =====")
+    print("1.  Check Balance")
+    print("2.  Deposit")
+    print("3.  Withdraw")
+    print("4.  Exit")
+
+def check_balance(pin):
+    print(f" Current balance: ₹{accounts[pin]['balance']}")
+
+
+def deposit(pin):
+    try:
+        amount = float(input(" Enter amount to deposit: ₹"))
+        if amount > 0:
+            accounts[pin]['balance'] += amount
+            print(f" ₹{amount} deposited successfully.")
+        else:
+            print(" Invalid amount.")
+    except ValueError:
+        print(" Please enter a valid number.")
+
+
+def withdraw(pin):
+    try:
+        amount = float(input(" Enter amount to withdraw: ₹"))
+        if 0 < amount <= accounts[pin]['balance']:
+            accounts[pin]['balance'] -= amount
+            print(f" ₹{amount} withdrawn successfully.")
+        else:
+            print(" Insufficient balance or invalid amount.")
+    except ValueError:
+        print(" Please enter a valid number.")
+
+
+user_pin = authenticate()
+
+if user_pin:
+    while True:
+        show_menu()
+        choice = input(" Choose an option (1-4): ")
+
+        if choice == "1":
+            check_balance(user_pin)
+        elif choice == "2":
+            deposit(user_pin)
+        elif choice == "3":
+            withdraw(user_pin)
+        elif choice == "4":
+            print(" Thank you for using our ATM!")
+            break
+        else:
+            print(" Invalid choice. Please select 1-4.")
